@@ -378,6 +378,25 @@
                         <div id="oneClickLPLPCreateWayStatus" class="status"></div>
                     </div>
                 </div>
+
+                <!-- ========== 新增：setWithdrawRecipient ========== -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h6>10. 设置提取接收地址 (withdrawRecipient)</h6>
+                        <div class="row align-items-end">
+                            <div class="col-md-7">
+                                <input type="text" id="oneClickLPWithdrawRecipient" class="form-control" placeholder="提取接收地址（EOA/合约地址）">
+                            </div>
+                            <div class="col-md-3">
+                                <button onclick="callOneClickLPFunction('setWithdrawRecipient')" class="btn-custom w-100">执行</button>
+                            </div>
+                            <div class="col-md-2">
+                                <button onclick="readOneClickLPConfig('withdrawRecipient')" class="btn-read w-100">读取当前值</button>
+                            </div>
+                        </div>
+                        <div id="oneClickLPWithdrawRecipientStatus" class="status"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -545,6 +564,25 @@
                         <div id="rcFireflyNFTStatus" class="status"></div>
                     </div>
                 </div>
+
+                <!-- ========== 新增：setWithdrawRecipient ========== -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h6>9. 设置提取接收地址 (withdrawRecipient)</h6>
+                        <div class="row align-items-end">
+                            <div class="col-md-7">
+                                <input type="text" id="rcWithdrawRecipient" class="form-control" placeholder="提取接收地址（EOA/合约地址）">
+                            </div>
+                            <div class="col-md-3">
+                                <button onclick="callReleaseControllerFunction('setWithdrawRecipient')" class="btn-custom w-100">执行</button>
+                            </div>
+                            <div class="col-md-2">
+                                <button onclick="readReleaseControllerConfig('withdrawRecipient')" class="btn-read w-100">读取当前值</button>
+                            </div>
+                        </div>
+                        <div id="rcWithdrawRecipientStatus" class="status"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -650,6 +688,25 @@
                             </div>
                         </div>
                         <div id="lrbBurnMiniBtcStatus" class="status"></div>
+                    </div>
+                </div>
+
+                <!-- ========== 新增：setWithdrawRecipient ========== -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h6>6. 设置提取接收地址 (withdrawRecipient)</h6>
+                        <div class="row align-items-end">
+                            <div class="col-md-7">
+                                <input type="text" id="lrbWithdrawRecipient" class="form-control" placeholder="提取接收地址（EOA/合约地址）">
+                            </div>
+                            <div class="col-md-3">
+                                <button onclick="callLPRewardBurnFunction('setWithdrawRecipient')" class="btn-custom w-100">执行</button>
+                            </div>
+                            <div class="col-md-2">
+                                <button onclick="readLPRewardBurnConfig('withdrawRecipient')" class="btn-read w-100">读取当前值</button>
+                            </div>
+                        </div>
+                        <div id="lrbWithdrawRecipientStatus" class="status"></div>
                     </div>
                 </div>
             </div>
@@ -870,6 +927,25 @@
                         <div id="lpFarmMinOutStatus" class="status"></div>
                     </div>
                 </div>
+
+                <!-- ========== 新增：setWithdrawRecipient ========== -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h6>12. 设置提取接收地址 (withdrawRecipient)</h6>
+                        <div class="row align-items-end">
+                            <div class="col-md-7">
+                                <input type="text" id="lpFarmWithdrawRecipient" class="form-control" placeholder="提取接收地址（EOA/合约地址）">
+                            </div>
+                            <div class="col-md-3">
+                                <button onclick="callLPFarmFunction('setWithdrawRecipient')" class="btn-custom w-100">执行</button>
+                            </div>
+                            <div class="col-md-2">
+                                <button onclick="readLPFarmConfig('withdrawRecipient')" class="btn-read w-100">读取当前值</button>
+                            </div>
+                        </div>
+                        <div id="lpFarmWithdrawRecipientStatus" class="status"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -878,7 +954,7 @@
     <script>
         // 全局变量
         let provider, signer, walletAddress;
-        // 合约ABI（严格匹配合约源码）
+        // 合约ABI（严格匹配合约源码，新增withdrawRecipient相关函数）
         const oneClickLPABI = [
             "function router() view returns (address)",
             "function factory() view returns (address)",
@@ -891,6 +967,7 @@
             "function enableLPFromMinibtc() view returns (bool)",
             "function enableLPFromMinibtcAndUsdt() view returns (bool)",
             "function enableLPFromUsdt() view returns (bool)",
+            "function withdrawRecipient() view returns (address)", // 新增
             "function setRouter(address _router) external",
             "function setFactory(address _factory) external",
             "function setUsdt(address _usdt) external",
@@ -899,7 +976,8 @@
             "function setMinibtc(address _minibtc) external",
             "function setSellFeeBps(uint256 _bps) external",
             "function setReleaseController(address _address) external",
-            "function setLPCreateWay(bool minibtc, bool minibtcAndUsdt, bool usdt_) external"
+            "function setLPCreateWay(bool minibtc, bool minibtcAndUsdt, bool usdt_) external",
+            "function setWithdrawRecipient(address newRecipient) external onlyOwner" // 新增
         ];
 
         const releaseControllerABI = [
@@ -912,6 +990,7 @@
             "function minibtcPair() view returns (address)",
             "function rewardSigner() view returns (address)",
             "function fireflyNFT() view returns (address)",
+            "function withdrawRecipient() view returns (address)", // 新增
             "function setUsdtToken(address _token) external",
             "function setFeeEOA(address _eoa) external",
             "function setFarmContract(address _farm) external",
@@ -919,7 +998,8 @@
             "function toggleTransferPerm(bool _enable) external",
             "function setMinibtcConfig(address _minibtc, address _pair) external",
             "function setRewardSigner(address _signer) external",
-            "function setFireflyNFT(address _nft) external"
+            "function setFireflyNFT(address _nft) external",
+            "function setWithdrawRecipient(address newRecipient) external onlyOwner" // 新增
         ];
 
         const lpRewardBurnABI = [
@@ -928,14 +1008,16 @@
             "function burnBlackHole() view returns (address)",
             "function MAX_BURN_PER_DAY() view returns (uint256)",
             "function lastBurnTime() view returns (uint256)",
+            "function withdrawRecipient() view returns (address)", // 新增
             "function setToken(address _token) external",
             "function setRewardSigner(address _signer) external",
             "function setBurnBlackHole(address _burnBlackHole) external",
             "function setMaxBurnPerDay(uint256 _max) external",
-            "function BurnMiniBtc(uint256 burnAmount, string calldata burnDate) external"
+            "function BurnMiniBtc(uint256 burnAmount, string calldata burnDate) external",
+            "function setWithdrawRecipient(address newRecipient) external onlyOwner" // 新增
         ];
 
-        // LPFarm ABI（严格匹配合约源码，无多余函数）
+        // LPFarm ABI（严格匹配合约源码，无多余函数，新增withdrawRecipient）
         const lpFarmABI = [
             // 读取函数（完全匹配合约变量名）
             "function pancakeRouter() view returns (address)",
@@ -949,6 +1031,7 @@
             "function machineActivationPercent() view returns (uint256)",
             "function maxStakePercentPerMachine() view returns (uint256)",
             "function minOut() view returns (uint256)",
+            "function withdrawRecipient() view returns (address)", // 新增
             // 设置函数（完全匹配合约函数名）
             "function setRouter(address r) external",
             "function setPricePair(address p) external",
@@ -960,7 +1043,8 @@
             "function setAMMAddress(address _amm) external",
             "function setMachineActivationPercent(uint256 pct) external",
             "function setMaxStakePercentPerMachine(uint256 pct) external",
-            "function setM(uint256 _minOut) external"
+            "function setM(uint256 _minOut) external",
+            "function setWithdrawRecipient(address newRecipient) external onlyOwner" // 新增
         ];
 
         // ========== 修复后的钱包连接逻辑 ==========
@@ -1094,7 +1178,7 @@
         }
 
         // ========== 读取配置函数 ==========
-        // 读取OneClickLP配置
+        // 读取OneClickLP配置（新增withdrawRecipient）
         async function readOneClickLPConfig(configKey) {
             if (!provider) return alert('请先连接钱包！');
             const contractAddr = document.getElementById('oneClickLPAddr').value;
@@ -1127,10 +1211,15 @@
                         statusEl.className = 'status success';
                         statusEl.textContent = '读取LP创建方式成功！';
                         return;
+                    case 'withdrawRecipient': // 新增
+                        value = await contract.withdrawRecipient();
+                        break;
                     default: return alert('无效的配置项！');
                 }
                 
-                const inputId = configKey === 'ammAddress' ? 'oneClickLPAMM' : `oneClickLP${configKey.charAt(0).toUpperCase() + configKey.slice(1)}`;
+                const inputId = configKey === 'ammAddress' ? 'oneClickLPAMM' : 
+                               configKey === 'withdrawRecipient' ? 'oneClickLPWithdrawRecipient' : // 新增
+                               `oneClickLP${configKey.charAt(0).toUpperCase() + configKey.slice(1)}`;
                 document.getElementById(inputId).value = value;
                 
                 statusEl.className = 'status success';
@@ -1141,7 +1230,7 @@
             }
         }
 
-        // 读取ReleaseController配置
+        // 读取ReleaseController配置（新增withdrawRecipient）
         async function readReleaseControllerConfig(configKey) {
             if (!provider) return alert('请先连接钱包！');
             const contractAddr = document.getElementById('releaseControllerAddr').value;
@@ -1171,13 +1260,18 @@
                         return;
                     case 'rewardSigner': value = await contract.rewardSigner(); break;
                     case 'fireflyNFT': value = await contract.fireflyNFT(); break;
+                    case 'withdrawRecipient': // 新增
+                        value = await contract.withdrawRecipient();
+                        break;
                     default: return alert('无效的配置项！');
                 }
                 
                 if (configKey === 'transferPerm') {
                     document.getElementById('rcTransferPerm').value = value.toString();
                 } else {
-                    document.getElementById(`rc${configKey.charAt(0).toUpperCase() + configKey.slice(1)}`).value = value;
+                    const inputId = configKey === 'withdrawRecipient' ? 'rcWithdrawRecipient' : // 新增
+                                   `rc${configKey.charAt(0).toUpperCase() + configKey.slice(1)}`;
+                    document.getElementById(inputId).value = value;
                 }
                 
                 statusEl.className = 'status success';
@@ -1188,7 +1282,7 @@
             }
         }
 
-        // 读取LPRewardBurn配置
+        // 读取LPRewardBurn配置（新增withdrawRecipient）
         async function readLPRewardBurnConfig(configKey) {
             if (!provider) return alert('请先连接钱包！');
             const contractAddr = document.getElementById('lpRewardBurnAddr').value;
@@ -1215,10 +1309,15 @@
                         statusEl.className = 'status success';
                         statusEl.textContent = `最后销毁时间: ${new Date(lastTime * 1000).toLocaleString()}, 每日最大销毁量: ${maxBurn}, 下次销毁时间: ${timeText}`;
                         return;
+                    case 'withdrawRecipient': // 新增
+                        value = await contract.withdrawRecipient();
+                        break;
                     default: return alert('无效的配置项！');
                 }
                 
-                document.getElementById(`lrb${configKey.charAt(0).toUpperCase() + configKey.slice(1)}`).value = value;
+                const inputId = configKey === 'withdrawRecipient' ? 'lrbWithdrawRecipient' : // 新增
+                               `lrb${configKey.charAt(0).toUpperCase() + configKey.slice(1)}`;
+                document.getElementById(inputId).value = value;
                 
                 statusEl.className = 'status success';
                 statusEl.textContent = `读取成功: ${value}`;
@@ -1228,7 +1327,7 @@
             }
         }
 
-        // 读取LPFarm配置（完全匹配合约源码）
+        // 读取LPFarm配置（完全匹配合约源码，新增withdrawRecipient）
         async function readLPFarmConfig(configKey) {
             if (!provider) return alert('请先连接钱包！');
             const contractAddr = document.getElementById('lpFarmAddr').value;
@@ -1246,8 +1345,10 @@
                 'ammAddress': 'lpFarmAmmAddressStatus',
                 'machineActivationPercent': 'lpFarmMachineActivationPercentStatus',
                 'maxStakePercentPerMachine': 'lpFarmMaxStakePercentPerMachineStatus',
-                'minOut': 'lpFarmMinOutStatus'
+                'minOut': 'lpFarmMinOutStatus',
+                'withdrawRecipient': 'lpFarmWithdrawRecipientStatus' // 新增
             };
+            
             const statusEl = document.getElementById(statusElMap[configKey]);
             if (!statusEl) return alert('无效的配置项！');
             
@@ -1268,10 +1369,13 @@
                     case 'machineActivationPercent': value = await contract.machineActivationPercent(); break;
                     case 'maxStakePercentPerMachine': value = await contract.maxStakePercentPerMachine(); break;
                     case 'minOut': value = await contract.minOut(); break;
-                    default: throw new Error('无效的配置项！');
+                    case 'withdrawRecipient': // 新增
+                        value = await contract.withdrawRecipient();
+                        break;
+                    default: return alert('无效的配置项！');
                 }
                 
-                // 匹配输入框ID
+                // 映射输入框ID
                 const inputIdMap = {
                     'pancakeRouter': 'lpFarmRouter',
                     'pricePair': 'lpFarmPricePair',
@@ -1283,308 +1387,247 @@
                     'ammAddress': 'lpFarmAmmAddress',
                     'machineActivationPercent': 'lpFarmMachineActivationPercent',
                     'maxStakePercentPerMachine': 'lpFarmMaxStakePercentPerMachine',
-                    'minOut': 'lpFarmMinOut'
+                    'minOut': 'lpFarmMinOut',
+                    'withdrawRecipient': 'lpFarmWithdrawRecipient' // 新增
                 };
+                
                 document.getElementById(inputIdMap[configKey]).value = value;
                 
                 statusEl.className = 'status success';
                 statusEl.textContent = `读取成功: ${value}`;
             } catch (error) {
-                let errorMsg = '';
-                if (error.message.includes('CALL_EXCEPTION')) {
-                    errorMsg = `读取失败：合约中未找到 ${configKey}() 函数（权限不足或函数名不匹配）`;
-                } else {
-                    errorMsg = `读取失败: ${error.message}`;
-                }
                 statusEl.className = 'status error';
-                statusEl.textContent = errorMsg;
-                console.error('LPFarm读取错误:', error);
+                statusEl.textContent = `读取失败: ${error.message}`;
             }
         }
 
-        // ========== 执行设置函数 ==========
-        // 执行OneClickLP函数（修复变量名冲突）
+        // ========== 合约调用函数 ==========
+        // OneClickLP合约函数调用（新增setWithdrawRecipient）
         async function callOneClickLPFunction(funcName) {
-            if (!provider || !signer) return alert('请先连接钱包！');
+            if (!signer) return alert('请先连接钱包并确保已授权！');
             const contractAddr = document.getElementById('oneClickLPAddr').value;
             if (!ethers.utils.isAddress(contractAddr)) return alert('OneClickLP地址无效！');
             
             const contract = new ethers.Contract(contractAddr, oneClickLPABI, signer);
-            const statusEl = document.getElementById(`oneClickLP${funcName.charAt(0).toUpperCase() + funcName.slice(1)}Status`);
+            const statusEl = document.getElementById(`oneClickLP${funcName === 'setAMMAddress' ? 'AMM' : funcName === 'setWithdrawRecipient' ? 'WithdrawRecipient' : funcName.replace('set', '')}Status`);
             
             try {
                 statusEl.className = 'status loading';
-                statusEl.textContent = '交易处理中，请等待...';
+                statusEl.textContent = '正在发送交易...';
                 
                 let tx;
                 switch(funcName) {
                     case 'setRouter':
-                        const routerAddr = document.getElementById('oneClickLPRouter').value;
-                        if (!ethers.utils.isAddress(routerAddr)) throw new Error('Router地址无效');
-                        tx = await contract.setRouter(routerAddr);
+                        const router = document.getElementById('oneClickLPRouter').value;
+                        if (!ethers.utils.isAddress(router)) throw new Error('Router地址无效');
+                        tx = await contract.setRouter(router);
                         break;
                     case 'setFactory':
-                        const factoryAddr = document.getElementById('oneClickLPFactory').value;
-                        if (!ethers.utils.isAddress(factoryAddr)) throw new Error('Factory地址无效');
-                        tx = await contract.setFactory(factoryAddr);
+                        const factory = document.getElementById('oneClickLPFactory').value;
+                        if (!ethers.utils.isAddress(factory)) throw new Error('Factory地址无效');
+                        tx = await contract.setFactory(factory);
                         break;
                     case 'setUsdt':
-                        const usdtAddr = document.getElementById('oneClickLPUsdt').value;
-                        if (!ethers.utils.isAddress(usdtAddr)) throw new Error('USDT地址无效');
-                        tx = await contract.setUsdt(usdtAddr);
+                        const usdt = document.getElementById('oneClickLPUsdt').value;
+                        if (!ethers.utils.isAddress(usdt)) throw new Error('USDT地址无效');
+                        tx = await contract.setUsdt(usdt);
                         break;
                     case 'setAMMAddress':
-                        const ammAddr = document.getElementById('oneClickLPAMM').value;
-                        if (!ethers.utils.isAddress(ammAddr)) throw new Error('AMM地址无效');
-                        if (ammAddr === '0x0000000000000000000000000000000000000000') throw new Error('AMM地址不能为零地址');
-                        tx = await contract.setAMMAddress(ammAddr);
+                        const amm = document.getElementById('oneClickLPAMM').value;
+                        if (!ethers.utils.isAddress(amm)) throw new Error('AMM地址无效');
+                        tx = await contract.setAMMAddress(amm);
                         break;
                     case 'setFarm':
-                        const farmAddr = document.getElementById('oneClickLPFarm').value;
-                        if (!ethers.utils.isAddress(farmAddr)) throw new Error('Farm地址无效');
-                        tx = await contract.setFarm(farmAddr);
+                        const farm = document.getElementById('oneClickLPFarm').value;
+                        if (!ethers.utils.isAddress(farm)) throw new Error('Farm地址无效');
+                        tx = await contract.setFarm(farm);
                         break;
                     case 'setMinibtc':
-                        const minibtcAddr = document.getElementById('oneClickLPMinibtc').value;
-                        if (!ethers.utils.isAddress(minibtcAddr)) throw new Error('MiniBTC地址无效');
-                        tx = await contract.setMinibtc(minibtcAddr);
+                        const minibtc = document.getElementById('oneClickLPMinibtc').value;
+                        if (!ethers.utils.isAddress(minibtc)) throw new Error('MiniBTC地址无效');
+                        tx = await contract.setMinibtc(minibtc);
                         break;
                     case 'setSellFeeBps':
-                        const sellFeeBpsValue = document.getElementById('oneClickLPSellFeeBps').value;
-                        if (sellFeeBpsValue < 0 || sellFeeBpsValue > 10000) throw new Error('手续费范围0-10000');
-                        tx = await contract.setSellFeeBps(sellFeeBpsValue);
+                        const bps = document.getElementById('oneClickLPSellFeeBps').value;
+                        if (!bps || bps < 0 || bps > 10000) throw new Error('手续费BPS必须在0-10000之间');
+                        tx = await contract.setSellFeeBps(bps);
                         break;
                     case 'setReleaseController':
-                        const rcAddr = document.getElementById('oneClickLPReleaseController').value;
-                        if (!ethers.utils.isAddress(rcAddr)) throw new Error('ReleaseController地址无效');
-                        tx = await contract.setReleaseController(rcAddr);
+                        const rc = document.getElementById('oneClickLPReleaseController').value;
+                        if (!ethers.utils.isAddress(rc)) throw new Error('ReleaseController地址无效');
+                        tx = await contract.setReleaseController(rc);
                         break;
                     case 'setLPCreateWay':
-                        const isMinibtcEnabled = document.getElementById('lpWayMinibtc').checked;
-                                                const isMinibtcUsdtEnabled = document.getElementById('lpWayMinibtcUsdt').checked;
-                        const isUsdtEnabled = document.getElementById('lpWayUsdt').checked;
-                        tx = await contract.setLPCreateWay(isMinibtcEnabled, isMinibtcUsdtEnabled, isUsdtEnabled);
+                        const way1 = document.getElementById('lpWayMinibtc').checked;
+                        const way2 = document.getElementById('lpWayMinibtcUsdt').checked;
+                        const way3 = document.getElementById('lpWayUsdt').checked;
+                        tx = await contract.setLPCreateWay(way1, way2, way3);
                         break;
-                    default:
-                        throw new Error(`不支持的函数: ${funcName}`);
+                    case 'setWithdrawRecipient': // 新增
+                        const recipient = document.getElementById('oneClickLPWithdrawRecipient').value;
+                        if (!ethers.utils.isAddress(recipient)) throw new Error('提取接收地址无效');
+                        tx = await contract.setWithdrawRecipient(recipient);
+                        break;
+                    default: return alert('无效的函数名！');
                 }
-
-                // 等待交易上链
+                
+                statusEl.textContent = `交易已发送，哈希: ${tx.hash}，等待上链确认...`;
                 await tx.wait();
+                
                 statusEl.className = 'status success';
-                statusEl.textContent = '操作成功！交易哈希: ' + tx.hash.substring(0, 10) + '...';
-                
-                // 重新读取配置刷新显示
-                const configKeyMap = {
-                    'setRouter': 'router',
-                    'setFactory': 'factory',
-                    'setUsdt': 'usdt',
-                    'setAMMAddress': 'ammAddress',
-                    'setFarm': 'farm',
-                    'setMinibtc': 'minibtc',
-                    'setSellFeeBps': 'sellFeeBps',
-                    'setReleaseController': 'ReleaseController',
-                    'setLPCreateWay': 'lpCreateWay'
-                };
-                if (configKeyMap[funcName]) {
-                    setTimeout(() => readOneClickLPConfig(configKeyMap[funcName]), 1000);
-                }
+                statusEl.textContent = `交易成功！区块高度: ${tx.blockNumber}，哈希: ${tx.hash}`;
             } catch (error) {
-                let errorMsg = error.message;
-                if (errorMsg.includes('only owner')) {
-                    errorMsg = '执行失败：仅合约拥有者可调用该函数';
-                } else if (errorMsg.includes('invalid address')) {
-                    errorMsg = '执行失败：无效的地址格式';
-                } else if (errorMsg.length > 100) {
-                    errorMsg = errorMsg.substring(0, 100) + '...';
-                }
-                
                 statusEl.className = 'status error';
-                statusEl.textContent = `执行失败: ${errorMsg}`;
-                console.error('OneClickLP执行错误:', error);
+                statusEl.textContent = `执行失败: ${error.message}`;
             }
         }
 
-        // 执行ReleaseController函数
+        // ReleaseController合约函数调用（新增setWithdrawRecipient）
         async function callReleaseControllerFunction(funcName) {
-            if (!provider || !signer) return alert('请先连接钱包！');
+            if (!signer) return alert('请先连接钱包并确保已授权！');
             const contractAddr = document.getElementById('releaseControllerAddr').value;
             if (!ethers.utils.isAddress(contractAddr)) return alert('ReleaseController地址无效！');
             
             const contract = new ethers.Contract(contractAddr, releaseControllerABI, signer);
-            const statusEl = document.getElementById(`rc${funcName.charAt(0).toUpperCase() + funcName.slice(1)}Status`);
+            const statusEl = document.getElementById(`rc${funcName.replace('set', '').replace('toggle', '')}Status`);
             
             try {
                 statusEl.className = 'status loading';
-                statusEl.textContent = '交易处理中，请等待...';
+                statusEl.textContent = '正在发送交易...';
                 
                 let tx;
                 switch(funcName) {
                     case 'setUsdtToken':
-                        const usdtAddr = document.getElementById('rcUsdtToken').value;
-                        if (!ethers.utils.isAddress(usdtAddr)) throw new Error('USDT地址无效');
-                        tx = await contract.setUsdtToken(usdtAddr);
+                        const usdt = document.getElementById('rcUsdtToken').value;
+                        if (!ethers.utils.isAddress(usdt)) throw new Error('USDT地址无效');
+                        tx = await contract.setUsdtToken(usdt);
                         break;
                     case 'setFeeEOA':
-                        const feeEOAAddr = document.getElementById('rcFeeEOA').value;
-                        if (!ethers.utils.isAddress(feeEOAAddr)) throw new Error('手续费接收地址无效');
-                        tx = await contract.setFeeEOA(feeEOAAddr);
+                        const eoa = document.getElementById('rcFeeEOA').value;
+                        if (!ethers.utils.isAddress(eoa)) throw new Error('EOA地址无效');
+                        tx = await contract.setFeeEOA(eoa);
                         break;
                     case 'setFarmContract':
-                        const farmAddr = document.getElementById('rcFarmContract').value;
-                        if (!ethers.utils.isAddress(farmAddr)) throw new Error('Farm合约地址无效');
-                        tx = await contract.setFarmContract(farmAddr);
+                        const farm = document.getElementById('rcFarmContract').value;
+                        if (!ethers.utils.isAddress(farm)) throw new Error('Farm地址无效');
+                        tx = await contract.setFarmContract(farm);
                         break;
                     case 'setTransferAdmin':
-                        const adminAddr = document.getElementById('rcTransferAdmin').value;
-                        if (!ethers.utils.isAddress(adminAddr)) throw new Error('转账管理员地址无效');
-                        tx = await contract.setTransferAdmin(adminAddr);
+                        const admin = document.getElementById('rcTransferAdmin').value;
+                        if (!ethers.utils.isAddress(admin)) throw new Error('管理员地址无效');
+                        tx = await contract.setTransferAdmin(admin);
                         break;
                     case 'toggleTransferPerm':
-                        const isEnabled = document.getElementById('rcTransferPerm').value === 'true';
-                        tx = await contract.toggleTransferPerm(isEnabled);
+                        const perm = document.getElementById('rcTransferPerm').value === 'true';
+                        tx = await contract.toggleTransferPerm(perm);
                         break;
                     case 'setMinibtcConfig':
-                        const minibtcAddr = document.getElementById('rcMinibtc').value;
-                        const pairAddr = document.getElementById('rcMinibtcPair').value;
-                        if (!ethers.utils.isAddress(minibtcAddr)) throw new Error('MiniBTC地址无效');
-                        if (!ethers.utils.isAddress(pairAddr)) throw new Error('MiniBTC交易对地址无效');
-                        tx = await contract.setMinibtcConfig(minibtcAddr, pairAddr);
+                        const minibtc = document.getElementById('rcMinibtc').value;
+                        const pair = document.getElementById('rcMinibtcPair').value;
+                        if (!ethers.utils.isAddress(minibtc) || !ethers.utils.isAddress(pair)) {
+                            throw new Error('MiniBTC或交易对地址无效');
+                        }
+                        tx = await contract.setMinibtcConfig(minibtc, pair);
                         break;
                     case 'setRewardSigner':
                         const signerAddr = document.getElementById('rcRewardSigner').value;
-                        if (!ethers.utils.isAddress(signerAddr)) throw new Error('奖励签名者地址无效');
+                        if (!ethers.utils.isAddress(signerAddr)) throw new Error('签名者地址无效');
                         tx = await contract.setRewardSigner(signerAddr);
                         break;
                     case 'setFireflyNFT':
-                        const nftAddr = document.getElementById('rcFireflyNFT').value;
-                        if (!ethers.utils.isAddress(nftAddr)) throw new Error('FireflyNFT地址无效');
-                        tx = await contract.setFireflyNFT(nftAddr);
+                        const nft = document.getElementById('rcFireflyNFT').value;
+                        if (!ethers.utils.isAddress(nft)) throw new Error('NFT地址无效');
+                        tx = await contract.setFireflyNFT(nft);
                         break;
-                    default:
-                        throw new Error(`不支持的函数: ${funcName}`);
+                    case 'setWithdrawRecipient': // 新增
+                        const recipient = document.getElementById('rcWithdrawRecipient').value;
+                        if (!ethers.utils.isAddress(recipient)) throw new Error('提取接收地址无效');
+                        tx = await contract.setWithdrawRecipient(recipient);
+                        break;
+                    default: return alert('无效的函数名！');
                 }
-
+                
+                statusEl.textContent = `交易已发送，哈希: ${tx.hash}，等待上链确认...`;
                 await tx.wait();
+                
                 statusEl.className = 'status success';
-                statusEl.textContent = '操作成功！交易哈希: ' + tx.hash.substring(0, 10) + '...';
-                
-                // 重新读取配置
-                const configKeyMap = {
-                    'setUsdtToken': 'usdtToken',
-                    'setFeeEOA': 'feeEOA',
-                    'setFarmContract': 'farmContract',
-                    'setTransferAdmin': 'transferAdmin',
-                    'toggleTransferPerm': 'transferPerm',
-                    'setMinibtcConfig': 'minibtcConfig',
-                    'setRewardSigner': 'rewardSigner',
-                    'setFireflyNFT': 'fireflyNFT'
-                };
-                if (configKeyMap[funcName]) {
-                    setTimeout(() => readReleaseControllerConfig(configKeyMap[funcName]), 1000);
-                }
+                statusEl.textContent = `交易成功！区块高度: ${tx.blockNumber}，哈希: ${tx.hash}`;
             } catch (error) {
-                let errorMsg = error.message;
-                if (errorMsg.includes('only owner')) {
-                    errorMsg = '执行失败：仅合约拥有者可调用该函数';
-                } else if (errorMsg.includes('invalid address')) {
-                    errorMsg = '执行失败：无效的地址格式';
-                } else if (errorMsg.length > 100) {
-                    errorMsg = errorMsg.substring(0, 100) + '...';
-                }
-                
                 statusEl.className = 'status error';
-                statusEl.textContent = `执行失败: ${errorMsg}`;
-                console.error('ReleaseController执行错误:', error);
+                statusEl.textContent = `执行失败: ${error.message}`;
             }
         }
 
-        // 执行LPRewardBurn函数
+        // LPRewardBurn合约函数调用（新增setWithdrawRecipient）
         async function callLPRewardBurnFunction(funcName) {
-            if (!provider || !signer) return alert('请先连接钱包！');
+            if (!signer) return alert('请先连接钱包并确保已授权！');
             const contractAddr = document.getElementById('lpRewardBurnAddr').value;
             if (!ethers.utils.isAddress(contractAddr)) return alert('LPRewardBurn地址无效！');
             
             const contract = new ethers.Contract(contractAddr, lpRewardBurnABI, signer);
-            const statusEl = document.getElementById(`lrb${funcName.charAt(0).toUpperCase() + funcName.slice(1)}Status`) || document.getElementById('lrbBurnMiniBtcStatus');
+            const statusEl = document.getElementById(`lrb${funcName === 'BurnMiniBtc' ? 'BurnMiniBtc' : funcName.replace('set', '')}Status`);
             
             try {
                 statusEl.className = 'status loading';
-                statusEl.textContent = '交易处理中，请等待...';
+                statusEl.textContent = '正在发送交易...';
                 
                 let tx;
                 switch(funcName) {
                     case 'setToken':
-                        const tokenAddr = document.getElementById('lrbToken').value;
-                        if (!ethers.utils.isAddress(tokenAddr)) throw new Error('奖励代币地址无效');
-                        tx = await contract.setToken(tokenAddr);
+                        const token = document.getElementById('lrbToken').value;
+                        if (!ethers.utils.isAddress(token)) throw new Error('代币地址无效');
+                        tx = await contract.setToken(token);
                         break;
                     case 'setRewardSigner':
                         const signerAddr = document.getElementById('lrbRewardSigner').value;
-                        if (!ethers.utils.isAddress(signerAddr)) throw new Error('奖励签名者地址无效');
+                        if (!ethers.utils.isAddress(signerAddr)) throw new Error('签名者地址无效');
                         tx = await contract.setRewardSigner(signerAddr);
                         break;
                     case 'setBurnBlackHole':
-                        const blackHoleAddr = document.getElementById('lrbBurnBlackHole').value || '0x000000000000000000000000000000000000dEaD';
-                        if (!ethers.utils.isAddress(blackHoleAddr)) throw new Error('黑洞地址无效');
-                        tx = await contract.setBurnBlackHole(blackHoleAddr);
+                        const blackhole = document.getElementById('lrbBurnBlackHole').value || '0x000000000000000000000000000000000000dEaD';
+                        if (!ethers.utils.isAddress(blackhole)) throw new Error('黑洞地址无效');
+                        tx = await contract.setBurnBlackHole(blackhole);
                         break;
                     case 'setMaxBurnPerDay':
-                        const maxBurn = document.getElementById('lrbMaxBurnPerDay').value;
-                        if (maxBurn < 0) throw new Error('每日最大销毁量不能为负数');
-                        tx = await contract.setMaxBurnPerDay(ethers.BigNumber.from(maxBurn));
+                        const max = document.getElementById('lrbMaxBurnPerDay').value;
+                        if (!max || max < 0) throw new Error('最大销毁量必须大于等于0');
+                        tx = await contract.setMaxBurnPerDay(max);
                         break;
                     case 'BurnMiniBtc':
-                        const burnAmount = document.getElementById('lrbBurnAmount').value;
-                        const burnDate = document.getElementById('lrbBurnDate').value;
-                        if (burnAmount < 1) throw new Error('销毁数量必须大于0');
-                        if (!/^\d{4}-\d{2}-\d{2}$/.test(burnDate)) throw new Error('日期格式错误（需为YYYY-MM-DD）');
-                        tx = await contract.BurnMiniBtc(ethers.BigNumber.from(burnAmount), burnDate);
+                        const amount = document.getElementById('lrbBurnAmount').value;
+                        const date = document.getElementById('lrbBurnDate').value;
+                        if (!amount || amount < 1) throw new Error('销毁数量必须大于0');
+                        if (!date) throw new Error('请输入销毁日期');
+                        tx = await contract.BurnMiniBtc(amount, date);
                         break;
-                    default:
-                        throw new Error(`不支持的函数: ${funcName}`);
+                    case 'setWithdrawRecipient': // 新增
+                        const recipient = document.getElementById('lrbWithdrawRecipient').value;
+                        if (!ethers.utils.isAddress(recipient)) throw new Error('提取接收地址无效');
+                        tx = await contract.setWithdrawRecipient(recipient);
+                        break;
+                    default: return alert('无效的函数名！');
                 }
-
+                
+                statusEl.textContent = `交易已发送，哈希: ${tx.hash}，等待上链确认...`;
                 await tx.wait();
+                
                 statusEl.className = 'status success';
-                statusEl.textContent = '操作成功！交易哈希: ' + tx.hash.substring(0, 10) + '...';
-                
-                // 重新读取配置
-                const configKeyMap = {
-                    'setToken': 'token',
-                    'setRewardSigner': 'rewardSigner',
-                    'setBurnBlackHole': 'burnBlackHole',
-                    'setMaxBurnPerDay': 'maxBurnPerDay',
-                    'BurnMiniBtc': 'lastBurnInfo'
-                };
-                if (configKeyMap[funcName]) {
-                    setTimeout(() => readLPRewardBurnConfig(configKeyMap[funcName]), 1000);
-                }
+                statusEl.textContent = `交易成功！区块高度: ${tx.blockNumber}，哈希: ${tx.hash}`;
             } catch (error) {
-                let errorMsg = error.message;
-                if (errorMsg.includes('only owner')) {
-                    errorMsg = '执行失败：仅合约拥有者可调用该函数';
-                } else if (errorMsg.includes('invalid address')) {
-                    errorMsg = '执行失败：无效的地址格式';
-                } else if (errorMsg.length > 100) {
-                    errorMsg = errorMsg.substring(0, 100) + '...';
-                }
-                
                 statusEl.className = 'status error';
-                statusEl.textContent = `执行失败: ${errorMsg}`;
-                console.error('LPRewardBurn执行错误:', error);
+                statusEl.textContent = `执行失败: ${error.message}`;
             }
         }
 
-        // 执行LPFarm函数（完全匹配合约源码）
+        // LPFarm合约函数调用（完全匹配合约源码，新增setWithdrawRecipient）
         async function callLPFarmFunction(funcName) {
-            if (!provider || !signer) return alert('请先连接钱包！');
+            if (!signer) return alert('请先连接钱包并确保已授权！');
             const contractAddr = document.getElementById('lpFarmAddr').value;
             if (!ethers.utils.isAddress(contractAddr)) return alert('LPFarm地址无效！');
             
             const contract = new ethers.Contract(contractAddr, lpFarmABI, signer);
-            // 映射状态提示框ID
-            const statusElMap = {
+            // 映射状态元素ID
+            const statusIdMap = {
                 'setRouter': 'lpFarmRouterStatus',
                 'setPricePair': 'lpFarmPricePairStatus',
                 'setUsdtToken': 'lpFarmUsdtTokenStatus',
@@ -1595,123 +1638,99 @@
                 'setAMMAddress': 'lpFarmAmmAddressStatus',
                 'setMachineActivationPercent': 'lpFarmMachineActivationPercentStatus',
                 'setMaxStakePercentPerMachine': 'lpFarmMaxStakePercentPerMachineStatus',
-                'setM': 'lpFarmMinOutStatus'
+                'setM': 'lpFarmMinOutStatus',
+                'setWithdrawRecipient': 'lpFarmWithdrawRecipientStatus' // 新增
             };
-            const statusEl = document.getElementById(statusElMap[funcName]);
-            if (!statusEl) return alert('无效的配置项！');
+            
+            const statusEl = document.getElementById(statusIdMap[funcName]);
+            if (!statusEl) return alert('无效的函数名！');
             
             try {
                 statusEl.className = 'status loading';
-                statusEl.textContent = '交易处理中，请等待...';
+                statusEl.textContent = '正在发送交易...';
                 
                 let tx;
                 switch(funcName) {
-                    // 地址类配置
                     case 'setRouter':
-                        const routerAddr = document.getElementById('lpFarmRouter').value.trim();
-                        if (!ethers.utils.isAddress(routerAddr)) throw new Error('Router地址无效');
-                        tx = await contract.setRouter(routerAddr);
+                        const router = document.getElementById('lpFarmRouter').value;
+                        if (!ethers.utils.isAddress(router)) throw new Error('Router地址无效');
+                        tx = await contract.setRouter(router);
                         break;
                     case 'setPricePair':
-                        const pricePairAddr = document.getElementById('lpFarmPricePair').value.trim();
-                        if (!ethers.utils.isAddress(pricePairAddr)) throw new Error('交易对地址无效');
-                        tx = await contract.setPricePair(pricePairAddr);
+                        const pair = document.getElementById('lpFarmPricePair').value;
+                        if (!ethers.utils.isAddress(pair)) throw new Error('交易对地址无效');
+                        tx = await contract.setPricePair(pair);
                         break;
                     case 'setUsdtToken':
-                        const usdtAddr = document.getElementById('lpFarmUsdtToken').value.trim();
-                        if (!ethers.utils.isAddress(usdtAddr)) throw new Error('USDT地址无效');
-                        tx = await contract.setUsdtToken(usdtAddr);
+                        const usdt = document.getElementById('lpFarmUsdtToken').value;
+                        if (!ethers.utils.isAddress(usdt)) throw new Error('USDT地址无效');
+                        tx = await contract.setUsdtToken(usdt);
                         break;
                     case 'setMinibtcToken':
-                        const minibtcAddr = document.getElementById('lpFarmMinibtcToken').value.trim();
-                        if (!ethers.utils.isAddress(minibtcAddr)) throw new Error('MiniBTC地址无效');
-                        tx = await contract.setMinibtcToken(minibtcAddr);
+                        const minibtc = document.getElementById('lpFarmMinibtcToken').value;
+                        if (!ethers.utils.isAddress(minibtc)) throw new Error('MiniBTC地址无效');
+                        tx = await contract.setMinibtcToken(minibtc);
                         break;
                     case 'setTokenB':
-                        const tokenBAddr = document.getElementById('lpFarmTokenB').value.trim();
-                        if (!ethers.utils.isAddress(tokenBAddr)) throw new Error('TokenB地址无效');
-                        tx = await contract.setTokenB(tokenBAddr);
+                        const tokenB = document.getElementById('lpFarmTokenB').value;
+                        if (!ethers.utils.isAddress(tokenB)) throw new Error('TokenB地址无效');
+                        tx = await contract.setTokenB(tokenB);
                         break;
                     case 'setrewardReleaseController':
-                        const rcAddr = document.getElementById('lpFarmReleaseController').value.trim();
-                        if (!ethers.utils.isAddress(rcAddr)) throw new Error('ReleaseController地址无效');
-                        tx = await contract.setrewardReleaseController(rcAddr);
+                        const rc = document.getElementById('lpFarmReleaseController').value;
+                        if (!ethers.utils.isAddress(rc)) throw new Error('ReleaseController地址无效');
+                        tx = await contract.setrewardReleaseController(rc);
                         break;
                     case 'setOneClickLP':
-                        const oneClickLPAddr = document.getElementById('lpFarmOneClickLP').value.trim();
-                        if (!ethers.utils.isAddress(oneClickLPAddr)) throw new Error('OneClickLP地址无效');
-                        tx = await contract.setOneClickLP(oneClickLPAddr);
+                        const oneClickLP = document.getElementById('lpFarmOneClickLP').value;
+                        if (!ethers.utils.isAddress(oneClickLP)) throw new Error('OneClickLP地址无效');
+                        tx = await contract.setOneClickLP(oneClickLP);
                         break;
                     case 'setAMMAddress':
-                        const ammAddr = document.getElementById('lpFarmAmmAddress').value.trim();
-                        if (!ethers.utils.isAddress(ammAddr)) throw new Error('AMM地址无效');
-                        tx = await contract.setAMMAddress(ammAddr);
+                        const amm = document.getElementById('lpFarmAmmAddress').value;
+                        if (!ethers.utils.isAddress(amm)) throw new Error('AMM地址无效');
+                        tx = await contract.setAMMAddress(amm);
                         break;
-                    
-                    // 数值类配置
                     case 'setMachineActivationPercent':
-                        const activationPct = ethers.BigNumber.from(document.getElementById('lpFarmMachineActivationPercent').value.trim());
-                        if (activationPct.lt(1) || activationPct.gt(100)) throw new Error('激活比例必须为1-100');
-                        tx = await contract.setMachineActivationPercent(activationPct);
+                        const machinePct = document.getElementById('lpFarmMachineActivationPercent').value;
+                        if (!machinePct || machinePct < 1 || machinePct > 100) throw new Error('矿机激活比例必须在1-100之间');
+                        tx = await contract.setMachineActivationPercent(machinePct);
                         break;
                     case 'setMaxStakePercentPerMachine':
-                        const maxStakePct = ethers.BigNumber.from(document.getElementById('lpFarmMaxStakePercentPerMachine').value.trim());
-                        if (maxStakePct.lt(1) || maxStakePct.gt(100)) throw new Error('最大质押比例必须为1-100');
-                        tx = await contract.setMaxStakePercentPerMachine(maxStakePct);
+                        const stakePct = document.getElementById('lpFarmMaxStakePercentPerMachine').value;
+                        if (!stakePct || stakePct < 1 || stakePct > 100) throw new Error('单矿机最大质押比例必须在1-100之间');
+                        tx = await contract.setMaxStakePercentPerMachine(stakePct);
                         break;
                     case 'setM':
-                        const minOutValue = ethers.BigNumber.from(document.getElementById('lpFarmMinOut').value.trim());
-                        tx = await contract.setM(minOutValue);
+                        const minOut = document.getElementById('lpFarmMinOut').value;
+                        if (minOut < 0) throw new Error('最小输出数量不能为负数');
+                        tx = await contract.setM(minOut);
                         break;
-                    
-                    default:
-                        throw new Error(`不支持的函数: ${funcName}`);
+                    case 'setWithdrawRecipient': // 新增
+                        const recipient = document.getElementById('lpFarmWithdrawRecipient').value;
+                        if (!ethers.utils.isAddress(recipient)) throw new Error('提取接收地址无效');
+                        tx = await contract.setWithdrawRecipient(recipient);
+                        break;
+                    default: return alert('无效的函数名！');
                 }
-
+                
+                statusEl.textContent = `交易已发送，哈希: ${tx.hash}，等待上链确认...`;
                 await tx.wait();
+                
                 statusEl.className = 'status success';
-                statusEl.textContent = '操作成功！交易哈希: ' + tx.hash.substring(0, 10) + '...';
-                
-                // 重新读取配置刷新显示
-                const configKeyMap = {
-                    'setRouter': 'pancakeRouter',
-                    'setPricePair': 'pricePair',
-                    'setUsdtToken': 'usdtToken',
-                    'setMinibtcToken': 'minibtcToken',
-                    'setTokenB': 'tokenB',
-                    'setrewardReleaseController': 'ReleaseController',
-                    'setOneClickLP': 'oneClickLP',
-                    'setAMMAddress': 'ammAddress',
-                    'setMachineActivationPercent': 'machineActivationPercent',
-                    'setMaxStakePercentPerMachine': 'maxStakePercentPerMachine',
-                    'setM': 'minOut'
-                };
-                if (configKeyMap[funcName]) {
-                    setTimeout(() => readLPFarmConfig(configKeyMap[funcName]), 1000);
-                }
+                statusEl.textContent = `交易成功！区块高度: ${tx.blockNumber}，哈希: ${tx.hash}`;
             } catch (error) {
-                let errorMsg = error.message;
-                if (errorMsg.includes('only owner')) {
-                    errorMsg = '执行失败：仅合约拥有者可调用该函数';
-                } else if (errorMsg.includes('invalid address')) {
-                    errorMsg = '执行失败：无效的地址格式';
-                } else if (errorMsg.length > 100) {
-                    errorMsg = errorMsg.substring(0, 100) + '...';
-                }
-                
                 statusEl.className = 'status error';
-                statusEl.textContent = `执行失败: ${errorMsg}`;
-                console.error('LPFarm执行错误:', error);
+                statusEl.textContent = `执行失败: ${error.message}`;
             }
         }
 
-        // 页面初始化：默认展开所有面板
-        window.onload = function() {
+        // 页面加载完成后初始化所有折叠面板为展开状态
+        window.addEventListener('load', () => {
             document.querySelectorAll('.collapse-content').forEach(el => {
                 el.style.display = 'block';
             });
-            document.querySelectorAll('.collapse-btn').forEach(btn => {
-                btn.textContent = '收起 ▲';
-            });
-        };
+        });
     </script>
+</body>
+</html>
